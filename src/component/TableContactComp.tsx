@@ -47,7 +47,7 @@ const TableContactComp: React.FC<TABLESTATE> = (props) => {
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.email}</TableCell>
               <TableCell>{row.phone}</TableCell>
-              <TableCell><Button variant="contained" color="primary" onClick={() => onEdit(row.id)}>Edit</Button> <Button variant="contained" color="secondary" onClick={() => onDelete(row.id)}>Delete</Button></TableCell>
+              <TableCell><Button variant="contained" color="primary" onClick={() => onEdit(row)}>Edit</Button> <Button variant="contained" color="secondary" onClick={() => onDelete(row.id)}>Delete</Button></TableCell>
             </TableRow>)) : (<TableRow> <TableCell>There is no data of contact list</TableCell></TableRow>)}
         </TableBody>
       </Table>

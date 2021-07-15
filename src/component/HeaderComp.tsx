@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { alpha, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,6 +12,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { useDispatch, useSelector } from 'react-redux';
+import { fillterContact, toggleSetting } from '../redux/actions/contactAction';
+import { FormControlLabel, Switch } from '@material-ui/core';
 
 // Using header app from material UI https://material-ui.com/components/app-bar/
 
@@ -82,12 +85,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const HeaderComp = () => {
+    let dispatch = useDispatch()
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState<any>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState<any>(null);
+    const [stateSwitch, setStateSwitch] = React.useState({
+        checkedA: true,
+    });
+    const [theme, setTheme] = React.useState("dark");
 
+    const themeSelectorState = useSelector((state: any) => state.contact.theme);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    useEffect(() => {
+        if (themeSelectorState) {
+            setTheme(themeSelectorState)
+            setStateSwitch({ ...stateSwitch, checkedA: themeSelectorState === "dark" ? true : false });
+        }
+    }, [themeSelectorState])
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -153,6 +169,20 @@ const HeaderComp = () => {
         </Menu>
     );
 
+    const onenter = (e: any) => {
+        let value = e.target.value;
+        if (e.key === "Enter") {
+            console.log(value);
+
+            dispatch(fillterContact({ searchText: value }))
+        }
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStateSwitch({ ...stateSwitch, [event.target.name]: event.target.checked });
+        dispatch(toggleSetting())
+    };
+
     return (
         <div className={classes.grow}>
             <AppBar position="static">
@@ -175,6 +205,7 @@ const HeaderComp = () => {
                             <SearchIcon />
                         </div>
                         <InputBase
+                            onKeyDown={(e) => onenter(e)}
                             placeholder="Search…"
                             classes={{
                                 root: classes.inputRoot,
@@ -184,6 +215,17 @@ const HeaderComp = () => {
                         />
                     </div>
                     <div className={classes.grow} />
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={stateSwitch.checkedA}
+                                onChange={handleChange}
+                                name="checkedA"
+                                color="secondary"
+                            />
+                        }
+                        label={theme === "dark" ? "Dark" : "Light"}
+                    />
                     <div className={classes.sectionDesktop}>
                         <IconButton color="inherit">
                             <SettingsIcon />

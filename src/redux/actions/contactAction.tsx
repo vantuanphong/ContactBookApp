@@ -22,3 +22,14 @@ export const deleteContact = (payload: any) => ({
   type: ActionEvent.CONTACT_DELETE,
   payload
 });
+
+
+export const fillterContact = (payload: any) => ({
+  type: ActionEvent.CONTACT_FILLTER,
+  payload
+});
+
+export const toggleSetting = (payload?: any) => ({
+  type: ActionEvent.TOGGLESETTING,
+  payload
+});

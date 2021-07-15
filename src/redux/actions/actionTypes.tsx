@@ -7,4 +7,8 @@ export const ActionEvent = {
     CONTACT_UPDATE: "updateContact",
 
     CONTACT_DELETE: "deleteContact",
+
+    CONTACT_FILLTER: "fillterContact",
+    
+    TOGGLESETTING: "toggleSetting"
 };
